@@ -1,5 +1,4 @@
 #include "Grammar.h"
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -111,8 +110,8 @@ void Grammar::create_derivation_tree(uint32_t size) {
 }
 
 
-std::vector<std::string> Grammar::get_derivation_tree() {
-    std::vector<std::string> derivation_tree;
+std::vector<GrammarRule> Grammar::get_derivation_tree() {
+    std::vector<GrammarRule> derivation_tree;
 
     for (size_t i = 0; i < states.size(); i++) {
         std::vector<GrammarRule> expanded_rules = states[i]->get_expanded_rules();

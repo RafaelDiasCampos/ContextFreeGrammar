@@ -16,7 +16,7 @@ class Grammar {
     public:
         Grammar(std::ifstream file);
         void create_derivation_tree(uint32_t size);
-        std::vector<std::string> get_derivation_tree();
+        std::vector<GrammarRule> get_derivation_tree();
 
     private:
         std::vector<std::unique_ptr<LiteralObject>> vocabulary;

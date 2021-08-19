@@ -17,9 +17,8 @@ class GrammarRule {
         operator std::string() const;
         bool operator == (const GrammarRule &Ref);
         bool operator < (const GrammarRule&Ref) const;
-        GrammarRule& operator = (const GrammarRule &other) const;
+        GrammarRule& operator = (const GrammarRule &other);
         
     private:        
-
-        const std::vector<GrammarObject*> rule_objects;
+        std::vector<GrammarObject*> rule_objects;
 };

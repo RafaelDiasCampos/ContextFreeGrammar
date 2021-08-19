@@ -1,5 +1,4 @@
 #include "GrammarRule.h"
-#include <iostream>
 
 GrammarRule::GrammarRule(std::vector<GrammarObject*> o_rule_objects) : rule_objects(o_rule_objects){
 
@@ -7,11 +6,6 @@ GrammarRule::GrammarRule(std::vector<GrammarObject*> o_rule_objects) : rule_obje
 
 GrammarRule::GrammarRule(const GrammarRule &other) : rule_objects(other.rule_objects){
 
-}
-
-GrammarRule& GrammarRule::operator=(const GrammarRule &other) const {
-    GrammarRule* obj = new GrammarRule(other);
-    return *obj;
 }
 
 std::vector<GrammarRule> GrammarRule::expand_rule(uint32_t size) {
@@ -93,20 +87,15 @@ bool GrammarRule::operator == (const GrammarRule &Ref) {
 }
 
 bool GrammarRule::operator < (const GrammarRule&Ref) const{
-    std::cout << std::string(*this) << " is less than " << std::string(Ref) << " ? ";
-    if (this->size() < Ref.size()) {
-        std::cout << "Yes. Length is smaller" << std::endl;
-        return true;
+    if (this->size() != Ref.size()) {
+        return this->size() < Ref.size();
     }
-    bool result = std::string(*this) < std::string(Ref);
+    return std::string(*this) < std::string(Ref);
+}
 
-    if (result) {
-        std::cout << "Yes. string sort says so" << std::endl;
-    }
-    else {
-        std::cout << "No. string sort says so" << std::endl;
-    }
-    return result;
+GrammarRule& GrammarRule::operator=(const GrammarRule &other) {
+    this->rule_objects = other.rule_objects;
+    return *this;
 }
 
 GrammarRule::operator std::string() const{
