@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-g -ggdb -O2 -Wall
+CXXFLAGS=-g -ggdb -Ofast -Wall
 TEST_ARGS=examples/math.json 4
 
 TARGET=context_free_grammar
@@ -31,4 +31,5 @@ src/GrammarObject/StateObject.o: src/GrammarObject/StateObject.h
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS)
 
-.cpp.o: $(CXX) $(CXXFLAGS) -c -o $@ $<
+%.o: %.c
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
