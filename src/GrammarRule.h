@@ -13,6 +13,8 @@ class GrammarRule {
         GrammarRule(const GrammarRule &other);
         std::vector<GrammarRule> expand_rule(uint32_t size);
         bool is_literal();
+        uint32_t size();
+        
         operator std::string() const;
         bool operator == (const GrammarRule &Ref);
         bool operator < (const GrammarRule&Ref) const;

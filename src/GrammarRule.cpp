@@ -1,5 +1,6 @@
 #include "GrammarRule.h"
 #include <iostream>
+#include <stdint.h>
 
 GrammarRule::GrammarRule(std::vector<GrammarObject*> o_rule_objects) : rule_objects(o_rule_objects){
 
@@ -39,15 +40,27 @@ std::vector<GrammarRule> GrammarRule::expand_rule(uint32_t size) {
             // Create GrammarRule from our rule and add it to the expanded rules
             GrammarRule expanded_rule (expanded_rule_vec);
 
-            if (expanded_rule.rule_objects.size() <= size) {
+            if (expanded_rule.size() <= size) {
                 rules.push_back(expanded_rule);
-            }            
+            }
         }     
 
 
     }
     
     return rules;
+}
+
+uint32_t GrammarRule::size() {
+    uint32_t size = 0;
+
+    for (auto rule : rule_objects) {
+        if (rule->object_type == GrammarObject::ObjectType::Literal) {
+            size++;
+        }
+    }
+
+    return size;
 }
 
 bool GrammarRule::is_literal() {
