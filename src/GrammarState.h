@@ -10,13 +10,12 @@ class GrammarRule;
 
 class GrammarState {
     public:
-        GrammarState(std::string o_name, bool o_is_final);
+        GrammarState(std::string o_name);
         void addRule(GrammarRule rule);
         void expandRules(uint32_t size);
         std::vector<GrammarRule> get_expanded_rules();
         
         const std::string name;
-        const bool is_final;
         std::vector<GrammarRule> rules;
 
         private:

@@ -22,6 +22,7 @@ class Grammar {
         std::vector<std::unique_ptr<LiteralObject>> vocabulary;
         std::vector<std::unique_ptr<StateObject>> stateObjects;
         std::vector<std::unique_ptr<GrammarState>> states;
+        GrammarState *initial_state;
 
         StateObject* get_create_state_object(std::string character);
         LiteralObject* get_literal(std::string character);

@@ -1,4 +1,5 @@
 #include "Grammar.h"
+#include <memory>
 
 using json = nlohmann::json;
 
@@ -6,10 +7,19 @@ Grammar::Grammar(std::ifstream file) {
     json parsed_json = json::parse(file);
 
     // Data extracted from json
-    std::vector<std::string> json_final_states = parsed_json["glc"][0];
+    std::vector<std::string> json_states = parsed_json["glc"][0];
     std::vector<std::string> json_vocabulary = parsed_json["glc"][1];
     std::vector<std::vector<std::string>> json_rules = parsed_json["glc"][2];
     std::string json_initial_state = parsed_json["glc"][3];
+
+    // Create states
+    for (auto state_name: json_states) {
+        auto state = std::make_unique<GrammarState>(state_name);
+        states.push_back(std::move(state));
+        if (state_name == json_initial_state) {
+            initial_state = states.back().get();
+        }
+    }
 
     // Create vocabulary
     for (auto literal: json_vocabulary) {
@@ -18,20 +28,6 @@ Grammar::Grammar(std::ifstream file) {
     }
     auto literalObject = std::make_unique<LiteralObject>("#");
     vocabulary.push_back(std::move(literalObject));
-
-    // Create states
-    for (auto json_rule: json_rules) {
-        std::string str_state = json_rule[0];
-
-        if (!get_state(str_state)) {
-            bool is_final = false;
-            if (std::count(json_final_states.begin(), json_final_states.end(), str_state)) {
-                is_final = true;
-            }
-            auto state = std::make_unique<GrammarState>(str_state, is_final);
-            states.push_back(std::move(state));         
-        }
-    }
 
     // Create rules and add them to the states
     for (auto json_rule: json_rules) {
@@ -102,23 +98,12 @@ GrammarRule Grammar::create_rule(std::string str_rule) {
 }
 
 void Grammar::create_derivation_tree(uint32_t size) {
-    for (size_t i = 0; i < states.size(); i++) {
-        if (states[i].get()->is_final) {
-            states[i].get()->expandRules(size);
-        }
-    }
+    initial_state->expandRules(size);
 }
 
 
 std::vector<GrammarRule> Grammar::get_derivation_tree() {
-    std::vector<GrammarRule> derivation_tree;
-
-    for (size_t i = 0; i < states.size(); i++) {
-        std::vector<GrammarRule> expanded_rules = states[i]->get_expanded_rules();
-        for (auto rule : expanded_rules) {
-            derivation_tree.push_back(rule);
-        }
-    }
+    std::vector<GrammarRule> derivation_tree = initial_state->get_expanded_rules();
 
     std::sort(derivation_tree.begin(), derivation_tree.end());
     derivation_tree.erase(std::unique(derivation_tree.begin(), derivation_tree.end()), derivation_tree.end());

@@ -8,7 +8,8 @@ This repository hosts an application that creates a derivation tree for an arbit
 ``` bash
 git@github.com:RafaelDiasCampos/ContextFreeGrammar.git
 cd ContextFreeGrammar
-./init.sh
+git submodule init
+git submodule update
 make
 ```
 
