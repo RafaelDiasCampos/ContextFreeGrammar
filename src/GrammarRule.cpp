@@ -43,9 +43,7 @@ std::vector<GrammarRule> GrammarRule::expand_rule(uint32_t size) {
             if (expanded_rule.size() <= size) {
                 rules.push_back(expanded_rule);
             }
-        }     
-
-
+        }
     }
     
     return rules;

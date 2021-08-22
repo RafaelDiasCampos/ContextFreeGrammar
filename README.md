@@ -22,3 +22,20 @@ make
 ``` bash
 ./context_free_grammar grammar_file max_size
 ```
+
+## Issues
+Grammars that contain at least one recursive rule without any literals will cause the program to hang. This happens because rule size calculation needs to only take literals into consideration, but by doing that recursive rules with no literals will have the same size after expansion and will keep expanding forever. Example:
+``` json
+{
+    "glc": [
+        ["P"],
+        ["0", "1"],
+        [
+            ["P", "PP"],
+            ["P", "0"],
+            ["P", "1"]
+        ],
+        "P"
+    ]
+}
+```
