@@ -26,8 +26,6 @@ Grammar::Grammar(std::ifstream file) {
         auto literalObject = std::make_unique<LiteralObject>(literal);
         vocabulary.push_back(std::move(literalObject));
     }
-    auto literalObject = std::make_unique<LiteralObject>("#");
-    vocabulary.push_back(std::move(literalObject));
 
     // Create rules and add them to the states
     for (auto json_rule: json_rules) {
@@ -84,6 +82,12 @@ GrammarRule Grammar::create_rule(std::string str_rule) {
 
     for (auto c_transition : str_rule) {
         std::string transition = std::string(1, c_transition); 
+
+        // Don't insert # (empty rule)
+        if (transition == "#") {
+            continue;
+        }
+
         auto literal = get_literal(transition);
         if (literal) {
             rule.push_back(literal);

@@ -28,19 +28,13 @@ std::vector<GrammarRule> GrammarRule::expand_rule(uint32_t size) {
             std::vector<GrammarObject*> expanded_rule_vec;
 
             // Copy rule before current position expanded_rule_pos
-            if (rule_objects_it != rule_objects.begin()) {
-                expanded_rule_vec.insert(expanded_rule_vec.end(), rule_objects.begin(), rule_objects_it);
-            }
+            expanded_rule_vec.insert(expanded_rule_vec.end(), rule_objects.begin(), rule_objects_it);
 
-            // If rule isn't empty, copy it from transition
-            if (std::string(*state_rule.rule_objects[0]) != "#") {
-                expanded_rule_vec.insert(expanded_rule_vec.end(),  state_rule.rule_objects.begin(), state_rule.rule_objects.end());
-            }
+            // Copy rule from transition
+            expanded_rule_vec.insert(expanded_rule_vec.end(),  state_rule.rule_objects.begin(), state_rule.rule_objects.end());
 
-            // Copy rule after current position expanded_rule_pos
-            if (rule_objects_it + 1 != rule_objects.end()) {                
-                expanded_rule_vec.insert(expanded_rule_vec.end(), rule_objects_it + 1, rule_objects.end());
-            }
+            // Copy rule after current position expanded_rule_pos           
+            expanded_rule_vec.insert(expanded_rule_vec.end(), rule_objects_it + 1, rule_objects.end());
 
             // Create GrammarRule from our rule and add it to the expanded rules
             GrammarRule expanded_rule (expanded_rule_vec);
@@ -87,6 +81,10 @@ GrammarRule& GrammarRule::operator=(const GrammarRule &other) {
 }
 
 GrammarRule::operator std::string() const{
+    if (rule_objects.size() == 0) {
+        return "#";
+    }
+
     std::string out_string;
 
     for (auto rule_object : rule_objects) {
