@@ -6,7 +6,7 @@ This repository hosts an application that creates a derivation tree for an arbit
 
 ## Compiling
 ``` bash
-git@github.com:RafaelDiasCampos/ContextFreeGrammar.git
+git clone git@github.com:RafaelDiasCampos/ContextFreeGrammar.git
 cd ContextFreeGrammar
 git submodule init
 git submodule update
